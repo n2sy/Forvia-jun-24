@@ -6,7 +6,8 @@ export class Task {
   constructor(
     public id: string,
     public title: string,
-    public description?: string,
+    public description: string,
+    public year: number,
   ) {
     // this.id = id;
     // this.name = name;
