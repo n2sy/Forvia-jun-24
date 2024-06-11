@@ -11,9 +11,11 @@ import {
   Query,
   Req,
   Res,
+  UseInterceptors,
   ValidationPipe,
 } from '@nestjs/common';
 import { Response } from 'express';
+import { DurationInterceptor } from 'src/duration/duration.interceptor';
 import { UpperandjoinPipe } from 'src/upperandjoin/upperandjoin.pipe';
 import { v4 as uuidv4 } from 'uuid';
 import { AddTaskDTO } from './DTO/addtaskDTO';
@@ -33,6 +35,7 @@ export class TasksController {
     return this.taskSer.testerService();
   }
 
+  @UseInterceptors(DurationInterceptor)
   @Get('all')
   getAllTasks(@Res() response) {
     return response.json({ allTaks: this.tab });
