@@ -13,6 +13,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { Response } from 'express';
+import { UpperandjoinPipe } from 'src/upperandjoin/upperandjoin.pipe';
 import { v4 as uuidv4 } from 'uuid';
 import { AddTaskDTO } from './DTO/addtaskDTO';
 import { Task } from './models/task';
@@ -82,5 +83,10 @@ export class TasksController {
     if (i == -1) throw new NotFoundException("Task doesn't exist");
     this.tab.splice(i, 1);
     return { message: 'Task Successfully Deleted', tab: this.tab };
+  }
+
+  @Post('testpipe')
+  testerPipe(@Body(UpperandjoinPipe) body) {
+    return body;
   }
 }
