@@ -10,14 +10,16 @@ import {
   Query,
   Req,
   Res,
+  ValidationPipe,
 } from '@nestjs/common';
 import { Response } from 'express';
 import { v4 as uuidv4 } from 'uuid';
+import { AddTaskDTO } from './DTO/addtaskDTO';
 import { Task } from './models/task';
 
 @Controller('tasks')
 export class TasksController {
-  tab = [new Task('1', 'Project 0', 'My first project', 2024)];
+  tab = [new Task('1', 'Project 0', 2024, new Date(), 'todo', 'New project')];
 
   @Get('all')
   getAllTasks(@Res() response) {
@@ -43,10 +45,17 @@ export class TasksController {
   }
 
   @Post('new')
-  addTask(@Req() request, @Body() body) {
-    console.log(request, body);
+  addTask(@Req() request, @Body(ValidationPipe) body: AddTaskDTO) {
+    console.log(body instanceof AddTaskDTO);
     this.tab.push(
-      new Task(uuidv4(), body.title, body.description, body.year),
+      new Task(
+        uuidv4(),
+        body.title,
+        body.year,
+        new Date(),
+        body.statut,
+        body.description,
+      ),
 
       //   title: body.title,
       //   description: body.description,
@@ -57,12 +66,13 @@ export class TasksController {
   @Post('new/v2')
   addTask2(@Req() request, @Body('title') name, @Body('description') desc) {
     console.log(request);
-    this.tab.push(
-      new Task(uuidv4(), name, desc, 2024),
+    this.tab
+      .push
+      //new Task(uuidv4(), name, desc, 2024),
 
       //   title: body.title,
       //   description: body.description,
-    );
+      ();
     return { message: 'task added', tab: this.tab };
   }
 
