@@ -3,6 +3,7 @@ import {
   Controller,
   Delete,
   Get,
+  Inject,
   NotFoundException,
   Param,
   ParseIntPipe,
@@ -17,10 +18,20 @@ import { UpperandjoinPipe } from 'src/upperandjoin/upperandjoin.pipe';
 import { v4 as uuidv4 } from 'uuid';
 import { AddTaskDTO } from './DTO/addtaskDTO';
 import { Task } from './models/task';
+import { TasksService } from './tasks.service';
 
 @Controller('tasks')
 export class TasksController {
   tab = [new Task('1', 'Project 0', 2024, new Date(), 'todo', 'New project')];
+
+  //constructor(private taskSer: TasksService) {}
+
+  @Inject(TasksService) taskSer;
+
+  @Get('service')
+  getService() {
+    return this.taskSer.testerService();
+  }
 
   @Get('all')
   getAllTasks(@Res() response) {
@@ -87,6 +98,8 @@ export class TasksController {
 
   @Post('testpipe')
   testerPipe(@Body(UpperandjoinPipe) body) {
+    console.log(body);
+
     return body;
   }
 }
