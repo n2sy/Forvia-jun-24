@@ -41,6 +41,11 @@ export class BooksController {
         throw new ConflictException();
       });
   }
+  @Get('stats')
+  async nbBookPerYear() {
+    let res = await this.bookSer.nbBooksPerYearServ();
+    return res;
+  }
   @Get(':id')
   async getBook(@Param('id') livreId) {
     let res = await this.bookSer.getBookByIdServ(livreId);
@@ -81,6 +86,15 @@ export class BooksController {
   async restoreBook(@Param('id', ParseIntPipe) id) {
     try {
       let res = await this.bookSer.restoreBookServ(id);
+      return res;
+    } catch (err) {
+      throw new ConflictException();
+    }
+  }
+  @Delete('recover/:id')
+  async recoverBook(@Param('id', ParseIntPipe) id) {
+    try {
+      let res = await this.bookSer.recoverBookServ(id);
       return res;
     } catch (err) {
       throw new ConflictException();

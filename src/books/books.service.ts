@@ -16,7 +16,9 @@ export class BooksService {
   }
 
   getAllBooksServ() {
-    return this.bookRep.find();
+    return this.bookRep.find({
+      withDeleted: true,
+    });
   }
 
   getBookByIdServ(id) {
@@ -52,5 +54,22 @@ export class BooksService {
   }
   restoreBookServ(id) {
     return this.bookRep.restore(id);
+  }
+  async recoverBookServ(id) {
+    let b = await this.bookRep.find({
+      withDeleted: true,
+      where: {
+        id: id,
+      },
+    });
+    return this.bookRep.recover(b);
+  }
+
+  nbBooksPerYearServ() {
+    const qb = this.bookRep.createQueryBuilder('book');
+    return qb
+      .select('book.year, count(book.id) as nbreDeLivres')
+      .groupBy('book.year')
+      .getRawMany();
   }
 }
