@@ -1,20 +1,21 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { TimeStamp } from '../generics/timestamp';
 
 @Entity('livre')
-export class BookEntity {
+export class BookEntity extends TimeStamp {
   @PrimaryGeneratedColumn()
-  id;
+  id: number;
 
   @Column({ type: 'varchar', length: 50 })
-  title;
+  title: string;
 
   @Column({ type: 'varchar', length: 50 })
-  editor;
+  editor: string;
 
   @Column({
     type: 'int',
   })
-  year;
+  year: number;
 }
 
 // {
