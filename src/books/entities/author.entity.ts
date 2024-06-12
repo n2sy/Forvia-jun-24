@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { TimeStamp } from '../generics/timestamp';
+import { BookEntity } from './book.entity';
 
 @Entity('auteur')
 export class AuthorEntity extends TimeStamp {
@@ -13,4 +14,7 @@ export class AuthorEntity extends TimeStamp {
     update: false,
   })
   nom: string;
+
+  @OneToMany(() => BookEntity, (book) => book.id)
+  listeLivres: BookEntity[];
 }
