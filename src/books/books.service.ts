@@ -72,4 +72,13 @@ export class BooksService {
       .groupBy('book.year')
       .getRawMany();
   }
+  nbBooksBetweenTwoYears(y1, y2) {
+    const qb = this.bookRep.createQueryBuilder('book');
+    return qb
+      .select('book.year, count(book.id) as nbreDeLivres')
+      .where('book.year >= :startyear AND book.year <= :endyear')
+      .setParameters({ startyear: y1, endyear: y2 })
+      .groupBy('book.year')
+      .getRawMany();
+  }
 }

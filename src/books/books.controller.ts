@@ -10,6 +10,7 @@ import {
   ParseIntPipe,
   Post,
   Put,
+  Query,
   Res,
 } from '@nestjs/common';
 import { Response } from 'express';
@@ -44,6 +45,14 @@ export class BooksController {
   @Get('stats')
   async nbBookPerYear() {
     let res = await this.bookSer.nbBooksPerYearServ();
+    return res;
+  }
+  @Get('stats2')
+  async nbBookBetweenYears(
+    @Query('startyear') startyear,
+    @Query('endyear') endyear,
+  ) {
+    let res = await this.bookSer.nbBooksBetweenTwoYears(startyear, endyear);
     return res;
   }
   @Get(':id')
