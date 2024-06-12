@@ -67,10 +67,38 @@ export class BooksController {
       throw new ConflictException();
     }
   }
+  @Delete('softdelete/:id')
+  async softDeleteBook(@Param('id', ParseIntPipe) id) {
+    try {
+      let res = await this.bookSer.softDeleteBookServ(id);
+      return res;
+    } catch (err) {
+      throw new ConflictException();
+    }
+  }
+
+  @Delete('restore/:id')
+  async restoreBook(@Param('id', ParseIntPipe) id) {
+    try {
+      let res = await this.bookSer.restoreBookServ(id);
+      return res;
+    } catch (err) {
+      throw new ConflictException();
+    }
+  }
   @Delete('remove/:id')
   async removeBook(@Param('id', ParseIntPipe) id) {
     try {
       let res = await this.bookSer.removeBookServ(id);
+      return { res, message: `le livre intitulé ${res.title} a été supprimé` };
+    } catch (err) {
+      throw new ConflictException();
+    }
+  }
+  @Delete('softremove/:id')
+  async softRemoveBook(@Param('id', ParseIntPipe) id) {
+    try {
+      let res = await this.bookSer.softRemoveBookServ(id);
       return { res, message: `le livre intitulé ${res.title} a été supprimé` };
     } catch (err) {
       throw new ConflictException();

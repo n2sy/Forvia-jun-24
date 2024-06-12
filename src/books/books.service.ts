@@ -42,4 +42,15 @@ export class BooksService {
     let bookToDelete = await this.getBookByIdServ(id);
     return this.bookRep.remove(bookToDelete);
   }
+  async softRemoveBookServ(id) {
+    let bookToDelete = await this.getBookByIdServ(id);
+    return this.bookRep.softRemove(bookToDelete);
+  }
+
+  softDeleteBookServ(id) {
+    return this.bookRep.softDelete(id);
+  }
+  restoreBookServ(id) {
+    return this.bookRep.restore(id);
+  }
 }
