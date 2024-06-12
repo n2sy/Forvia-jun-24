@@ -113,7 +113,7 @@ export class BooksController {
   async removeBook(@Param('id', ParseIntPipe) id) {
     try {
       let res = await this.bookSer.removeBookServ(id);
-      return { res, message: `le livre intitulé ${res.title} a été supprimé` };
+      return { res, message: `le livre intitulé  a été supprimé` };
     } catch (err) {
       throw new ConflictException();
     }
@@ -122,7 +122,7 @@ export class BooksController {
   async softRemoveBook(@Param('id', ParseIntPipe) id) {
     try {
       let res = await this.bookSer.softRemoveBookServ(id);
-      return { res, message: `le livre intitulé ${res.title} a été supprimé` };
+      return { res, message: `le livre intitulé  a été supprimé` };
     } catch (err) {
       throw new ConflictException();
     }

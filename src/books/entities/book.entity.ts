@@ -18,7 +18,9 @@ export class BookEntity extends TimeStamp {
   })
   year: number;
 
-  @ManyToOne(() => AuthorEntity, (author) => author.id)
+  @ManyToOne(() => AuthorEntity, (author) => author.id, {
+    // lazy: true,
+  })
   author: AuthorEntity;
 }
 

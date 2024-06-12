@@ -15,6 +15,8 @@ export class AuthorEntity extends TimeStamp {
   })
   nom: string;
 
-  @OneToMany(() => BookEntity, (book) => book.id)
+  @OneToMany(() => BookEntity, (book) => book.id, {
+    //  lazy: true,
+  })
   listeLivres: BookEntity[];
 }
