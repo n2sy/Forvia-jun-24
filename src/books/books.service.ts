@@ -13,4 +13,8 @@ export class BooksService {
   addBookServ(nBook: AddBookDTO) {
     return this.bookRep.save(nBook);
   }
+
+  getAllBooksServ() {
+    return this.bookRep.find();
+  }
 }
