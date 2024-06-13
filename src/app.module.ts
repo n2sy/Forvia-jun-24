@@ -11,6 +11,7 @@ import { FirstMiddleware } from './first/first.middleware';
 import { SecondMiddleware } from './second/second.middleware';
 import { TasksModule } from './tasks/tasks.module';
 import { BooksModule } from './books/books.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { BooksModule } from './books/books.module';
       synchronize: true,
     }),
     BooksModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

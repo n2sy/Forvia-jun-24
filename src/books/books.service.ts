@@ -23,9 +23,9 @@ export class BooksService {
 
   getBookByIdServ(id) {
     return this.bookRep.find({
-      //   relations: {
-      //     author: true,
-      //   },
+      relations: {
+        author: true,
+      },
       loadRelationIds: true,
       where: {
         id: id,

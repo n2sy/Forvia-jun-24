@@ -20,6 +20,7 @@ export class BookEntity extends TimeStamp {
 
   @ManyToOne(() => AuthorEntity, (author) => author.id, {
     // lazy: true,
+    cascade: true,
   })
   author: AuthorEntity;
 }
