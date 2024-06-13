@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
@@ -21,7 +21,24 @@ export class AuthService {
     return this.userRep.save(newUser);
   }
 
-  dd() {
-    bcrypt.verif();
+  async singin(credentials) {
+    let { identifiant, password } = credentials;
+    let qb = await this.userRep.createQueryBuilder('user');
+    let u = await qb
+      .select('user')
+      .where('user.username = :idt OR user.email = :idt', { idt: identifiant })
+      .getRawOne();
+    if (!u) throw new NotFoundException('Username et/ou email inexistant');
+
+    bcrypt.compare(password, u.password, (err, result) => {
+      console.log(result);
+      if (err) {
+        throw new NotFoundException('Mot de passe erroné');
+      } else
+        return {
+          id: u.id,
+          role: u.role,
+        };
+    });
   }
 }
