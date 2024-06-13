@@ -27,18 +27,19 @@ export class AuthService {
     let u = await qb
       .select('user')
       .where('user.username = :idt OR user.email = :idt', { idt: identifiant })
-      .getRawOne();
+      .getOne();
+
+    console.log(u);
+
     if (!u) throw new NotFoundException('Username et/ou email inexistant');
 
-    bcrypt.compare(password, u.password, (err, result) => {
-      console.log(result);
-      if (err) {
-        throw new NotFoundException('Mot de passe erroné');
-      } else
-        return {
-          id: u.id,
-          role: u.role,
-        };
-    });
+    const res = await bcrypt.compare(password, u.password);
+    if (!res) {
+      throw new NotFoundException('Mot de passe erroné');
+    } else
+      return {
+        id: u.id,
+        role: u.role,
+      };
   }
 }
