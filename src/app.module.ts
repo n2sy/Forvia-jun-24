@@ -4,14 +4,16 @@ import {
   NestModule,
   RequestMethod,
 } from '@nestjs/common';
+import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { AuthModule } from './auth/auth.module';
+import { JwtStrategy } from './auth/jwt.strategy';
+import { BooksModule } from './books/books.module';
 import { FirstMiddleware } from './first/first.middleware';
 import { SecondMiddleware } from './second/second.middleware';
 import { TasksModule } from './tasks/tasks.module';
-import { BooksModule } from './books/books.module';
-import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -26,11 +28,12 @@ import { AuthModule } from './auth/auth.module';
       autoLoadEntities: true,
       synchronize: true,
     }),
+    PassportModule.register({ defaultStrategy: 'jwt' }),
     BooksModule,
     AuthModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, JwtStrategy],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
