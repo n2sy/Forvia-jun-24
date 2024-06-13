@@ -13,6 +13,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
-    console.log(payload);
+    console.log('FORVIA', payload);
+    return { role: payload.role, id: payload.id };
   }
 }

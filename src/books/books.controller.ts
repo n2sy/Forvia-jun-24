@@ -11,17 +11,23 @@ import {
   Post,
   Put,
   Query,
+  Req,
   Res,
+  UseGuards,
 } from '@nestjs/common';
-import { Response } from 'express';
+import { Request, Response } from 'express';
+import { AdminGuard } from 'src/admin/admin.guard';
+import { JwtAuthGuard } from 'src/jwt-auth-guard/jwt-auth-guard.guard';
 import { AddBookDTO } from './DTO/addBookDTO';
 import { UpdateBookDTO } from './DTO/updateBookDTO';
 import { BooksService } from './books.service';
 
+@UseGuards(JwtAuthGuard)
 @Controller('books')
 export class BooksController {
   @Inject(BooksService) bookSer: BooksService;
 
+  @UseGuards(AdminGuard)
   @Post('add')
   async addBook(@Body() book: AddBookDTO) {
     try {
@@ -32,7 +38,9 @@ export class BooksController {
     }
   }
   @Get('all')
-  getBooks(@Res() response: Response) {
+  getBooks(@Req() request: Request, @Res() response: Response) {
+    console.log(request);
+
     this.bookSer
       .getAllBooksServ()
       .then((res) => {
