@@ -1,4 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { Repository } from 'typeorm';
@@ -8,6 +9,7 @@ import { RoleEnum } from './generics/Role.enum';
 export class AuthService {
   constructor(
     @InjectRepository(UserEntity) private userRep: Repository<UserEntity>,
+    private jwtService: JwtService,
   ) {}
 
   async signup(crendentials) {
@@ -36,10 +38,15 @@ export class AuthService {
     const res = await bcrypt.compare(password, u.password);
     if (!res) {
       throw new NotFoundException('Mot de passe erroné');
-    } else
-      return {
+    } else {
+      const jwt = this.jwtService.sign({
         id: u.id,
+        identifiant: identifiant,
         role: u.role,
+      });
+      return {
+        access_token: jwt,
       };
+    }
   }
 }
